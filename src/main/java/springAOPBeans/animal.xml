@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+
+	<!-- bean 등록 -> spring container 에서 자동 생성 -->
+	<!-- 타이핑 , Editor -->
+
+	<context:annotation-config></context:annotation-config>
+
+	<bean id="dog" class="springAOP.Dog">
+		<property name="myName" value="poodle"></property>
+		<qualifier value="qf_dog"></qualifier>
+	</bean>
+
+	<bean id="cat" class="springAOP.Cat">
+		<property name="myName" value="bella"></property>
+		<qualifier value="qf_cat"></qualifier>
+	</bean>
+
+	<!-- 생성자 통한 DI -->
+	<bean id="petOwner" class="springAOP.PetOwner">
+	</bean>
+
+	<bean id="logger" class="springAOP.Logger"></bean>
+
+	<aop:config>
+		<aop:aspect ref="logger" id="myAspect">
+			<aop:pointcut expression="execution(void springAOP.*.sound())"
+				id="selectSound" />
+			<aop:before method="aboutToSound"
+				pointcut-ref="selectSound" />
+		</aop:aspect>
+	</aop:config>
+
+</beans>
